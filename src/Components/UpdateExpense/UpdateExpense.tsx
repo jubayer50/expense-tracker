@@ -43,7 +43,7 @@ const UpdateExpense = ({ expense }: updateExpenseProps) => {
 
   const router = useRouter();
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);

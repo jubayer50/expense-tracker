@@ -20,7 +20,7 @@ import {
   toast,
 } from "@heroui/react";
 
-const onSubmit = async (e) => {
+const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
   const form = e.currentTarget;

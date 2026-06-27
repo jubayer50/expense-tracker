@@ -4,7 +4,7 @@ type expenseData = {
   title: string;
   amount: number;
   category: string;
-  data: string;
+  date: string;
 };
 
 import { createExpense } from "@/lib/action/addExpense";
@@ -23,13 +23,15 @@ import {
 const onSubmit = async (e) => {
   e.preventDefault();
 
-  const formData = new FormData(e.currentTarget);
+  const form = e.currentTarget;
+
+  const formData = new FormData(form);
 
   const expenseData: expenseData = {
     title: formData.get("title") as string,
     amount: Number(formData.get("amount")),
     category: formData.get("category") as string,
-    data: formData.get("date") as string,
+    date: formData.get("date") as string,
   };
 
   const result = await createExpense(expenseData);
@@ -38,7 +40,7 @@ const onSubmit = async (e) => {
     toast.success("Expense added!");
   }
 
-  e.currentTarget.reset();
+  form.reset();
 };
 
 const AddExpense = () => {

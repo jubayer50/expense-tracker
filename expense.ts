@@ -18,6 +18,33 @@ export const getExpenses = async (): Promise<expenseData[]> => {
 };
 
 // for update
+type expenseDataUpdate = {
+  title: string;
+  amount: number;
+  category: string;
+  date: string;
+};
+
+type updatePromise = {
+  acknowledged: boolean;
+  modifiedCount: number;
+  upsertedId: null | string;
+  upsertedCount: number;
+  matchedCount: number;
+};
+
+export const updateExpense = async (
+  updateExpenseData: expenseDataUpdate,
+  expenseId: string,
+): Promise<updatePromise> => {
+  const res = await fetch(`${base_url}/api/expenses/${expenseId}`, {
+    method: "PATCH",
+    headers: { "Content-type": "application/json" },
+    body: JSON.stringify(updateExpenseData),
+  });
+
+  return res.json();
+};
 
 // for delete
 type deleteExpenseResponse = {

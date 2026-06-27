@@ -11,8 +11,12 @@ import {
   Modal,
   Surface,
   TextField,
+  toast,
 } from "@heroui/react";
+import { parseDate } from "@internationalized/date";
 import { FaRegEdit } from "react-icons/fa";
+import { updateExpense } from "../../../expense";
+import { useRouter } from "next/navigation";
 
 type expenseDataUpdate = {
   title: string;
@@ -37,21 +41,12 @@ type updateExpenseProps = {
 const UpdateExpense = ({ expense }: updateExpenseProps) => {
   const { _id, title, amount, category, date } = expense;
 
-  /*
-   {
-    _id: '6a40046a1a7bedfe06c3f069',
-    title: 'Bus fare',
-    amount: 40,
-    category: 'transport',
-    date: '2026-06-27',
-    createAt: '2026-06-27T17:12:10.289Z'
-  }
-  */
+  const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget());
+    const formData = new FormData(e.currentTarget);
 
     const expenseDataUpdate: expenseDataUpdate = {
       title: formData.get("title") as string,
@@ -60,7 +55,12 @@ const UpdateExpense = ({ expense }: updateExpenseProps) => {
       date: formData.get("date") as string,
     };
 
-    console.log(expenseDataUpdate, "from update");
+    const result = await updateExpense(expenseDataUpdate, _id);
+
+    if (result.modifiedCount > 0) {
+      toast.success("Expense update successfully");
+      router.refresh();
+    }
   };
 
   return (
@@ -152,7 +152,11 @@ const UpdateExpense = ({ expense }: updateExpenseProps) => {
                   </div>
 
                   <div>
-                    <DateField isRequired name="date" defaultValue={date}>
+                    <DateField
+                      isRequired
+                      name="date"
+                      defaultValue={parseDate(date)}
+                    >
                       <Label>Date</Label>
                       <DateField.Group
                         className={
@@ -167,7 +171,11 @@ const UpdateExpense = ({ expense }: updateExpenseProps) => {
                   </div>
 
                   <div className="flex justify-end">
-                    <Button type="submit" className={"rounded-md"}>
+                    <Button
+                      type="submit"
+                      slot={"close"}
+                      className={"rounded-md"}
+                    >
                       Update Expense
                     </Button>
                   </div>

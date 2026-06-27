@@ -91,7 +91,11 @@ const UpdateExpense = ({ expense }: updateExpenseProps) => {
                     />
                   </TextField>
 
-                  <TextField isRequired name="amount" defaultValue={amount}>
+                  <TextField
+                    isRequired
+                    name="amount"
+                    defaultValue={amount.toString()}
+                  >
                     <Label>Expense Amount</Label>
                     <Input
                       type="number"
